@@ -53,7 +53,7 @@ with open(dataset_dir+"/"+"image_data.data","w") as data:
     data.write("test = " + val_txt_path + "\n")
 
     #Write fully qualified path of the classes.names file
-    data.write("test = " + dataset_dir + "/" + "classes.names" + "\n")
+    data.write("names = " + dataset_dir + "/" + "classes.names" + "\n")
 
     #Specify folder path to save traine model weights
     data.write('backup = backup')
