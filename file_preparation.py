@@ -1,56 +1,58 @@
 import os
-image_path = "" #Path where the images are placed
-os.chdir(image_path)
 
-path_list = []
-#Go through all the images file in the directory
+# Set your new directory structure
+dataset_dir = 'path/to/your/dataset'  # INPUT OF YOUR DATASET
+images_dir = os.path.join(dataset_dir, 'images')
 
-for current_dir, dirs, files in os.walk("."):
-    for f in files:
-        if f.endswith('.jpg'):
-            #Prepare file path to write into path.txt
-            file_loc = image_path + "/" + f
-            path_list.append(file_loc+"\n")
+# Create train.txt and val.txt paths
+train_txt_path = os.path.join(dataset_dir, 'train.txt')
+val_txt_path = os.path.join(dataset_dir, 'val.txt')
 
-#Take the first 20% of the paths to test the model
-path_list_test = path_list[:int(len(path_list)*0.2)]
-path_list = path_list[int(len(path_list)*0.2):]
+# List training and validation images from the respective directories
+train_images_dir = os.path.join(images_dir, 'train')
+val_images_dir = os.path.join(images_dir, 'val')
 
+# Get list of image filenames for training and validation sets
+train_images = [f for f in os.listdir(train_images_dir) if f.endswith(('.jpg', '.png', '.jpeg'))]
+val_images = [f for f in os.listdir(val_images_dir) if f.endswith(('.jpg', '.png', '.jpeg'))]
 
-#Create train.txt and write 80% of data inside (paths)
-with open('train.txt','w') as train:
-    for i in path_list:
-        train.write(i)
+# Write the train image paths
+with open(train_txt_path, 'w') as train_file:
+    for image in train_images:
+        train_file.write(os.path.join(train_images_dir, image) + '\n')
 
-#Create test.txt and write 80% of data inside (paths)
-with open('test.txt','w') as test:
-    for i in path_list_test:
-        test.write(i)
+# Write the val image paths
+with open(val_txt_path, 'w') as val_file:
+    for image in val_images:
+        val_file.write(os.path.join(val_images_dir, image) + '\n')
 
+print("train.txt and val.txt created successfully!")
 
 #Init the counter
 i=0
 #Create classes.names file by reading content from existing class.txtfile
-with open(image_path+"/"+"classes.names","w") as cls, \
-     open(image_path+"/"+"classes.txt","r") as text:
+with open(dataset_dir+"/"+"classes.names","w") as cls, \
+     open(dataset_dir+"/"+"classes.txt","r") as text:
     #Iterate through individual lines in classes txt and write in classes.names
     for l in text:
         cls.write(l)
         i+=1
 
+
+
 #Create image data.data like index to all the necessary data
-with open(image_path+"/"+"image_data.data","w") as data:
+with open(dataset_dir+"/"+"image_data.data","w") as data:
     #Write number of classes
     data.write("classes = " + str(i) + "\n")
 
     #Write fully qualified data of train.txt file
-    data.write("train = " + image_path + "/" + "train.txt" + "\n")
+    data.write("train = " + train_txt_path + "\n")
 
     #Write fully qualified path of the test.txt file
-    data.write("test = " + image_path + "/"+ "test.txt"+ "\n")
+    data.write("test = " + val_txt_path + "\n")
 
     #Write fully qualified path of the classes.names file
-    data.write("test = " + image_path + "/"+ "classes.names"+ "\n")
+    data.write("test = " + dataset_dir + "/" + "classes.names" + "\n")
 
     #Specify folder path to save traine model weights
     data.write('backup = backup')
