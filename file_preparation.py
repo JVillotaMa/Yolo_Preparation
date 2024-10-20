@@ -1,12 +1,32 @@
 import os
 
+###Put inside of your project 
+
+##MUST BE STRUCTURE
+"""
+/porject_name
+    filepreparation.py
+    /dataset
+        /images
+            /train
+
+            /val
+        labels/
+            /train
+            
+            /val
+    /files
+"""
+
+
 # Set your new directory structure
-dataset_dir = 'Dog_catPro/dataset'  # INPUT OF YOUR DATASET
+dataset_dir = 'dataset'  
+files_dir = "files"
 images_dir = os.path.join(dataset_dir, 'images')
 
 # Create train.txt and val.txt paths
-train_txt_path = os.path.join(dataset_dir, 'train.txt')
-val_txt_path = os.path.join(dataset_dir, 'val.txt')
+train_txt_path = os.path.join(files_dir, 'train.txt')
+val_txt_path = os.path.join(files_dir, 'val.txt')
 
 # List training and validation images from the respective directories
 train_images_dir = os.path.join(images_dir, 'train')
@@ -31,8 +51,8 @@ print("train.txt and val.txt created successfully!")
 #Init the counter
 i=0
 #Create classes.names file by reading content from existing class.txtfile
-with open(dataset_dir+"/"+"classes.names","w") as cls, \
-     open(dataset_dir+"/"+"classes.txt","r") as text:
+with open(files_dir+"/classes.names","w+") as cls, \
+     open(files_dir+"/classes.txt","r") as text:
     #Iterate through individual lines in classes txt and write in classes.names
     for l in text:
         cls.write(l)
@@ -42,7 +62,7 @@ print("Classes.names created succesfully")
 
 
 #Create image data.data like index to all the necessary data
-with open(dataset_dir+"/"+"image_data.data","w") as data:
+with open("image_data.data","w") as data:
     #Write number of classes
     data.write("classes = " + str(i) + "\n")
 
@@ -53,9 +73,9 @@ with open(dataset_dir+"/"+"image_data.data","w") as data:
     data.write("test = " + val_txt_path + "\n")
 
     #Write fully qualified path of the classes.names file
-    data.write("names = " + dataset_dir + "/" + "classes.names" + "\n")
+    data.write("names = " + files_dir + "/" + "classes.names" + "\n")
 
     #Specify folder path to save traine model weights
     data.write('backup = backup')
 
-print("iamge_data.data created succesfully")
+print("image_data.data created succesfully")
