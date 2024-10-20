@@ -1,7 +1,7 @@
 import os
 
 # Set your new directory structure
-dataset_dir = 'path/to/your/dataset'  # INPUT OF YOUR DATASET
+dataset_dir = 'Dog_catPro/dataset'  # INPUT OF YOUR DATASET
 images_dir = os.path.join(dataset_dir, 'images')
 
 # Create train.txt and val.txt paths
@@ -38,6 +38,7 @@ with open(dataset_dir+"/"+"classes.names","w") as cls, \
         cls.write(l)
         i+=1
 
+print("Classes.names created succesfully")
 
 
 #Create image data.data like index to all the necessary data
@@ -56,3 +57,5 @@ with open(dataset_dir+"/"+"image_data.data","w") as data:
 
     #Specify folder path to save traine model weights
     data.write('backup = backup')
+
+print("iamge_data.data created succesfully")
