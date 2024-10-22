@@ -16,22 +16,21 @@ def normalize_bbox(bbox, img_width, img_height):
     height = (y_max - y_min) / img_height
     return x_center, y_center, width, height
 
-# Directories for images and labels
-images_dir = 'path/to/images'  # Directory containing your images
-labels_dir = 'path/to/old/labels'  # Directory containing your old labels
+# Directory containing your images and labels
+dataset_dir = 'dataset/images/train'  # Update this to your dataset path
 
 # Process each label file
-for label_file in os.listdir(labels_dir):
-    if label_file.endswith('.txt'):
-        label_path = os.path.join(labels_dir, label_file)
+for file in os.listdir(dataset_dir):
+    if file.endswith('.txt'):
+        label_path = os.path.join(dataset_dir, file)
         
         # Get the corresponding image file to extract dimensions
-        image_file = label_file.replace('.txt', '.jpg')  # Adjust if image extension differs
-        image_path = os.path.join(images_dir, image_file)
+        image_file = file.replace('.txt', '.jpg')  # Adjust if your image extension differs
+        image_path = os.path.join(dataset_dir, image_file)
 
         # Check if the image exists
         if not os.path.isfile(image_path):
-            print(f"Warning: Image {image_file} not found for label {label_file}. Skipping.")
+            print(f"Warning: Image {image_file} not found for label {file}. Skipping.")
             continue
         
         # Open the label file
@@ -43,7 +42,7 @@ for label_file in os.listdir(labels_dir):
         img_width, img_height = img.size
         
         # Prepare to write the new label file
-        new_label_path = os.path.join(labels_dir, label_file)  # Overwrite the original label file
+        new_label_path = os.path.join(dataset_dir, file)  # Overwrite the original label file
 
         with open(new_label_path, 'w') as out_f:
             for line in lines:
